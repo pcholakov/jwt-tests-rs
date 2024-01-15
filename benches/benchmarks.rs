@@ -20,8 +20,14 @@ struct CreateTokenConfig {
     encode_key: EncodingKey,
 }
 
+struct DecodeTokenConfig {
+    token: String,
+    algorithm: Algorithm,
+    decode_key: DecodingKey,
+    validation: Validation,
+}
 
-fn bench_create_token_asymmetric(c: &mut Criterion) {
+fn bench_create_token(c: &mut Criterion) {
     let (private_key, _) = generate_rsa_key_pair().unwrap();
     let rsa_private_key = EncodingKey::from_rsa_der(private_key.to_pkcs1_der().unwrap().as_bytes());
 
@@ -66,7 +72,7 @@ fn bench_create_token_asymmetric(c: &mut Criterion) {
     group.finish();
 }
 
-fn bench_verify_token_asymmetric(c: &mut Criterion) {
+fn bench_verify_token(c: &mut Criterion) {
     let (private_key, public_key) = generate_rsa_key_pair().unwrap();
     let rsa_private_key = EncodingKey::from_rsa_der(private_key.to_pkcs1_der().unwrap().as_bytes());
     let rsa_public_key = DecodingKey::from_rsa_der(public_key.to_pkcs1_der().unwrap().as_bytes());
@@ -111,20 +117,13 @@ fn bench_verify_token_asymmetric(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, bench_create_token_asymmetric, bench_verify_token_asymmetric);
+criterion_group!(benches, bench_create_token, bench_verify_token);
 criterion_main!(benches);
 
 impl Display for CreateTokenConfig {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.algorithm.fmt(f)
     }
-}
-
-struct DecodeTokenConfig {
-    token: String,
-    algorithm: Algorithm,
-    decode_key: DecodingKey,
-    validation: Validation,
 }
 
 impl Display for DecodeTokenConfig {
