@@ -1,0 +1,19 @@
+[package]
+name = "jwt-tests"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+jsonwebtoken = "9.2.0"
+serde = "1.0.195"
+ulid = "1.1.0"
+ring = "0.17.7"
+rand = "0.8.5"
+rsa = "0.9.6"
+
+[dev-dependencies]
+criterion = "0.5.1"
+
+[[bench]]
+name = "benchmarks"
+harness = false
